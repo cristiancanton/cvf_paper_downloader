@@ -1,5 +1,5 @@
 import os
-import urllib.request
+import urllib.request, urllib.parse
 import socket
 import time
 from tqdm import tqdm
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     base_url = 'http://openaccess.thecvf.com'
     failed_papers = []
 
-    download_papers_conference = True
+    download_papers_conference = False
     download_paper_workshops = True
 
     # Download papers
@@ -133,7 +133,7 @@ if __name__ == "__main__":
             for curr_title in paper_titles:
                 str_to_check = str(curr_title.get('href'))
                 if 'pdf' in str_to_check:
-                    workshop_urls_to_download += [base_url + '/' + str_to_check[3:]]
+                    workshop_urls_to_download += [base_url + '/' + urllib.parse.quote(str_to_check[3:])]
 
             for curr_url in workshop_urls_to_download:
 
