@@ -1,5 +1,5 @@
 import os
-import urllib.request, urllib.parse
+import urllib
 import socket
 import time
 from tqdm import tqdm
@@ -36,7 +36,7 @@ def download_asset_with_retries(url_to_download, file_name_to_save, max_retries=
         if retries >= max_retries:
             return False
 
-        success_download = download_asset(curr_url, save_name)
+        success_download = download_asset(url_to_download, file_name_to_save)
 
         if not success_download:
             time.sleep(0.1)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     base_url = 'http://openaccess.thecvf.com'
     failed_papers = []
 
-    download_papers_conference = False
+    download_papers_conference = True
     download_paper_workshops = True
 
     # Download papers
@@ -73,7 +73,7 @@ if __name__ == "__main__":
         urls_to_download = []
         for curr_title in paper_titles:
             str_to_check = str(curr_title.get('href'))
-            if 'pdf' in str_to_check:
+            if 'supplemental.pdf' not in str_to_check and 'pdf' in str_to_check:
                 urls_to_download += [base_url + '/' + str_to_check]
 
         for curr_url in tqdm(urls_to_download):
